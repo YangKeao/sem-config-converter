@@ -1,0 +1,944 @@
+{
+  "version": "1.0",
+  "tidb_version": "v8.5.0",
+  "restricted_databases": [
+    "metrics_schema"
+  ],
+  "restricted_tables": [
+    {
+      "schema": "information_schema",
+      "name": "cluster_config",
+      "hidden": true
+    },
+    {
+      "schema": "information_schema",
+      "name": "cluster_hardware",
+      "hidden": true
+    },
+    {
+      "schema": "information_schema",
+      "name": "cluster_load",
+      "hidden": true
+    },
+    {
+      "schema": "information_schema",
+      "name": "cluster_log",
+      "hidden": true
+    },
+    {
+      "schema": "information_schema",
+      "name": "cluster_slow_query",
+      "hidden": true
+    },
+    {
+      "schema": "information_schema",
+      "name": "cluster_systeminfo",
+      "hidden": true
+    },
+    {
+      "schema": "information_schema",
+      "name": "inspection_result",
+      "hidden": true
+    },
+    {
+      "schema": "information_schema",
+      "name": "inspection_rules",
+      "hidden": true
+    },
+    {
+      "schema": "information_schema",
+      "name": "inspection_summary",
+      "hidden": true
+    },
+    {
+      "schema": "information_schema",
+      "name": "metrics_summary",
+      "hidden": true
+    },
+    {
+      "schema": "information_schema",
+      "name": "metrics_summary_by_label",
+      "hidden": true
+    },
+    {
+      "schema": "information_schema",
+      "name": "metrics_tables",
+      "hidden": true
+    },
+    {
+      "schema": "information_schema",
+      "name": "placement_policies",
+      "hidden": true
+    },
+    {
+      "schema": "information_schema",
+      "name": "slow_query",
+      "hidden": true
+    },
+    {
+      "schema": "information_schema",
+      "name": "tidb_hot_regions",
+      "hidden": true
+    },
+    {
+      "schema": "mysql",
+      "name": "tidb",
+      "hidden": true
+    },
+    {
+      "schema": "mysql",
+      "name": "gc_delete_range",
+      "hidden": true
+    },
+    {
+      "schema": "mysql",
+      "name": "gc_delete_range_done",
+      "hidden": true
+    },
+    {
+      "schema": "mysql",
+      "name": "expr_pushdown_blacklist",
+      "hidden": true
+    },
+    {
+      "schema": "performance_schema",
+      "name": "pd_profile_allocs",
+      "hidden": true
+    },
+    {
+      "schema": "performance_schema",
+      "name": "pd_profile_block",
+      "hidden": true
+    },
+    {
+      "schema": "performance_schema",
+      "name": "pd_profile_cpu",
+      "hidden": true
+    },
+    {
+      "schema": "performance_schema",
+      "name": "pd_profile_goroutines",
+      "hidden": true
+    },
+    {
+      "schema": "performance_schema",
+      "name": "pd_profile_memory",
+      "hidden": true
+    },
+    {
+      "schema": "performance_schema",
+      "name": "pd_profile_mutex",
+      "hidden": true
+    },
+    {
+      "schema": "performance_schema",
+      "name": "tidb_profile_allocs",
+      "hidden": true
+    },
+    {
+      "schema": "performance_schema",
+      "name": "tidb_profile_block",
+      "hidden": true
+    },
+    {
+      "schema": "performance_schema",
+      "name": "tidb_profile_cpu",
+      "hidden": true
+    },
+    {
+      "schema": "performance_schema",
+      "name": "tidb_profile_goroutines",
+      "hidden": true
+    },
+    {
+      "schema": "performance_schema",
+      "name": "tidb_profile_memory",
+      "hidden": true
+    },
+    {
+      "schema": "performance_schema",
+      "name": "tidb_profile_mutex",
+      "hidden": true
+    },
+    {
+      "schema": "performance_schema",
+      "name": "tikv_profile_cpu",
+      "hidden": true
+    }
+  ],
+  "restricted_status_variables": [
+    "tidb_gc_leader_desc"
+  ],
+  "restricted_variables": [
+    {
+      "name": "block_encryption_mode",
+      "hidden": false
+    },
+    {
+      "name": "datadir",
+      "hidden": false
+    },
+    {
+      "name": "ddl_slow_threshold",
+      "hidden": false
+    },
+    {
+      "name": "disconnect_on_expired_password",
+      "hidden": false
+    },
+    {
+      "name": "error_count",
+      "hidden": false
+    },
+    {
+      "name": "have_openssl",
+      "hidden": false
+    },
+    {
+      "name": "have_ssl",
+      "hidden": false
+    },
+    {
+      "name": "hostname",
+      "hidden": false,
+      "value": "localhost"
+    },
+    {
+      "name": "identity",
+      "hidden": false
+    },
+    {
+      "name": "last_insert_id",
+      "hidden": false
+    },
+    {
+      "name": "last_plan_from_binding",
+      "hidden": false
+    },
+    {
+      "name": "last_plan_from_cache",
+      "hidden": false
+    },
+    {
+      "name": "last_sql_use_alloc",
+      "hidden": false
+    },
+    {
+      "name": "license",
+      "hidden": false
+    },
+    {
+      "name": "max_allowed_packet",
+      "hidden": false
+    },
+    {
+      "name": "max_connections",
+      "hidden": false
+    },
+    {
+      "name": "mpp_version",
+      "hidden": false
+    },
+    {
+      "name": "plugin_dir",
+      "hidden": true
+    },
+    {
+      "name": "plugin_load",
+      "hidden": false
+    },
+    {
+      "name": "port",
+      "hidden": false
+    },
+    {
+      "name": "require_secure_transport",
+      "hidden": true
+    },
+    {
+      "name": "skip_name_resolve",
+      "hidden": false
+    },
+    {
+      "name": "socket",
+      "hidden": false
+    },
+    {
+      "name": "ssl_ca",
+      "hidden": false
+    },
+    {
+      "name": "ssl_cert",
+      "hidden": false
+    },
+    {
+      "name": "ssl_key",
+      "hidden": false
+    },
+    {
+      "name": "system_time_zone",
+      "hidden": false
+    },
+    {
+      "name": "tidb_adaptive_closest_read_threshold",
+      "hidden": true
+    },
+    {
+      "name": "tidb_allow_batch_cop",
+      "hidden": false
+    },
+    {
+      "name": "tidb_allow_function_for_expression_index",
+      "hidden": false
+    },
+    {
+      "name": "tidb_allow_mpp",
+      "hidden": false
+    },
+    {
+      "name": "tidb_analyze_version",
+      "hidden": false
+    },
+    {
+      "name": "tidb_backoff_lock_fast",
+      "hidden": false
+    },
+    {
+      "name": "tidb_backoff_weight",
+      "hidden": false
+    },
+    {
+      "name": "tidb_batch_commit",
+      "hidden": true
+    },
+    {
+      "name": "tidb_batch_delete",
+      "hidden": true
+    },
+    {
+      "name": "tidb_batch_insert",
+      "hidden": true
+    },
+    {
+      "name": "tidb_capture_plan_baselines",
+      "hidden": true
+    },
+    {
+      "name": "tidb_cdc_write_source",
+      "hidden": false
+    },
+    {
+      "name": "tidb_check_mb4_value_in_utf8",
+      "hidden": false
+    },
+    {
+      "name": "tidb_config",
+      "hidden": true
+    },
+    {
+      "name": "tidb_constraint_check_in_place",
+      "hidden": false
+    },
+    {
+      "name": "tidb_constraint_check_in_place_pessimistic",
+      "hidden": false
+    },
+    {
+      "name": "tidb_cost_model_version",
+      "hidden": false
+    },
+    {
+      "name": "tidb_current_ts",
+      "hidden": false
+    },
+    {
+      "name": "tidb_ddl_disk_quota",
+      "hidden": true
+    },
+    {
+      "name": "tidb_ddl_enable_fast_reorg",
+      "hidden": false
+    },
+    {
+      "name": "tidb_cloud_storage_uri",
+      "hidden": true
+    },
+    {
+      "name": "tidb_ddl_reorg_max_write_speed",
+      "hidden": true
+    },
+    {
+      "name": "tidb_disable_txn_auto_retry",
+      "hidden": true
+    },
+    {
+      "name": "tidb_dml_batch_size",
+      "hidden": true
+    },
+    {
+      "name": "tidb_dml_type",
+      "hidden": true
+    },
+    {
+      "name": "tidb_enable_analyze_snapshot",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_async_merge_global_stats",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_auto_analyze_priority_queue",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_batch_dml",
+      "hidden": true
+    },
+    {
+      "name": "tidb_enable_chunk_rpc",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_collect_execution_info",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_column_tracking",
+      "hidden": true
+    },
+    {
+      "name": "tidb_enable_ddl",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_dist_task",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_enhanced_security",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_exchange_partition",
+      "hidden": true
+    },
+    {
+      "name": "tidb_enable_extended_stats",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_fast_analyze",
+      "hidden": true
+    },
+    {
+      "name": "tidb_enable_gogc_tuner",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_global_index",
+      "hidden": true
+    },
+    {
+      "name": "tidb_enable_historical_stats",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_historical_stats_for_capture",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_legacy_instance_scope",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_list_partition",
+      "hidden": true
+    },
+    {
+      "name": "tidb_enable_local_txn",
+      "hidden": true
+    },
+    {
+      "name": "tidb_enable_metadata_lock",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_mutation_checker",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_new_cost_interface",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_parallel_hashagg_spill",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_pipelined_window_function",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_plan_replayer_capture",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_plan_replayer_continuous_capture",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_point_get_cache",
+      "hidden": true
+    },
+    {
+      "name": "tidb_enable_rate_limit_action",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_resource_control",
+      "hidden": true
+    },
+    {
+      "name": "tidb_enable_reuse_chunk",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_slow_log",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_stats_owner",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_stmt_summary",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_table_partition",
+      "hidden": true
+    },
+    {
+      "name": "tidb_enable_telemetry",
+      "hidden": true
+    },
+    {
+      "name": "tidb_enable_tiflash_read_for_write_stmt",
+      "hidden": true
+    },
+    {
+      "name": "tidb_enable_tmp_storage_on_oom",
+      "hidden": true
+    },
+    {
+      "name": "tidb_enable_top_sql",
+      "hidden": false
+    },
+    {
+      "name": "tidb_enable_vectorized_expression",
+      "hidden": false
+    },
+    {
+      "name": "tidb_evolve_plan_baselines",
+      "hidden": true
+    },
+    {
+      "name": "tidb_evolve_plan_task_end_time",
+      "hidden": true
+    },
+    {
+      "name": "tidb_evolve_plan_task_max_time",
+      "hidden": true
+    },
+    {
+      "name": "tidb_evolve_plan_task_start_time",
+      "hidden": true
+    },
+    {
+      "name": "tidb_expensive_query_time_threshold",
+      "hidden": false
+    },
+    {
+      "name": "tidb_expensive_txn_time_threshold",
+      "hidden": false
+    },
+    {
+      "name": "tidb_force_priority",
+      "hidden": true
+    },
+    {
+      "name": "tidb_general_log",
+      "hidden": false
+    },
+    {
+      "name": "tidb_generate_binary_plan",
+      "hidden": false
+    },
+    {
+      "name": "tidb_guarantee_linearizability",
+      "hidden": false
+    },
+    {
+      "name": "tidb_hash_exchange_with_new_collation",
+      "hidden": false
+    },
+    {
+      "name": "tidb_historical_stats_duration",
+      "hidden": false
+    },
+    {
+      "name": "tidb_init_chunk_size",
+      "hidden": false
+    },
+    {
+      "name": "tidb_last_ddl_info",
+      "hidden": false
+    },
+    {
+      "name": "tidb_last_plan_replayer_token",
+      "hidden": false
+    },
+    {
+      "name": "tidb_last_query_info",
+      "hidden": false
+    },
+    {
+      "name": "tidb_last_txn_info",
+      "hidden": false
+    },
+    {
+      "name": "tidb_load_based_replica_read_threshold",
+      "hidden": false
+    },
+    {
+      "name": "tidb_lock_unchanged_keys",
+      "hidden": false
+    },
+    {
+      "name": "tidb_log_file_max_days",
+      "hidden": false
+    },
+    {
+      "name": "tidb_max_chunk_size",
+      "hidden": false
+    },
+    {
+      "name": "tidb_mem_oom_action",
+      "hidden": false
+    },
+    {
+      "name": "tidb_mem_quota_analyze",
+      "hidden": false
+    },
+    {
+      "name": "tidb_memory_debug_mode_alarm_ratio",
+      "hidden": false
+    },
+    {
+      "name": "tidb_memory_debug_mode_min_heap_inuse",
+      "hidden": false
+    },
+    {
+      "name": "tidb_memory_usage_alarm_keep_record_num",
+      "hidden": false
+    },
+    {
+      "name": "tidb_memory_usage_alarm_ratio",
+      "hidden": false
+    },
+    {
+      "name": "tidb_merge_join_concurrency",
+      "hidden": false
+    },
+    {
+      "name": "tidb_metric_query_range_duration",
+      "hidden": true
+    },
+    {
+      "name": "tidb_metric_query_step",
+      "hidden": true
+    },
+    {
+      "name": "tidb_non_prepared_plan_cache_size",
+      "hidden": true
+    },
+    {
+      "name": "tidb_opt_broadcast_cartesian_join",
+      "hidden": false
+    },
+    {
+      "name": "tidb_opt_concurrency_factor",
+      "hidden": false
+    },
+    {
+      "name": "tidb_opt_copcpu_factor",
+      "hidden": false
+    },
+    {
+      "name": "tidb_opt_write_row_id",
+      "hidden": false
+    },
+    {
+      "name": "tidb_partition_prune_mode",
+      "hidden": false
+    },
+    {
+      "name": "tidb_pessimistic_txn_fair_locking",
+      "hidden": true
+    },
+    {
+      "name": "tidb_placement_mode",
+      "hidden": false
+    },
+    {
+      "name": "tidb_pprof_sql_cpu",
+      "hidden": false
+    },
+    {
+      "name": "tidb_prepared_plan_cache_size",
+      "hidden": true
+    },
+    {
+      "name": "tidb_projection_concurrency",
+      "hidden": true
+    },
+    {
+      "name": "tidb_pre_split_regions",
+      "hidden": false
+    },
+    {
+      "name": "tidb_rc_read_check_ts",
+      "hidden": false
+    },
+    {
+      "name": "tidb_rc_write_check_ts",
+      "hidden": true
+    },
+    {
+      "name": "tidb_read_consistency",
+      "hidden": false
+    },
+    {
+      "name": "tidb_record_plan_in_slow_log",
+      "hidden": false
+    },
+    {
+      "name": "tidb_redact_log",
+      "hidden": false
+    },
+    {
+      "name": "tidb_request_source_type",
+      "hidden": true
+    },
+    {
+      "name": "tidb_restricted_read_only",
+      "hidden": false
+    },
+    {
+      "name": "tidb_retry_limit",
+      "hidden": true
+    },
+    {
+      "name": "tidb_service_scope",
+      "hidden": false
+    },
+    {
+      "name": "tidb_simplified_metrics",
+      "hidden": true
+    },
+    {
+      "name": "tidb_skip_missing_partition_stats",
+      "hidden": false
+    },
+    {
+      "name": "tidb_slow_log_threshold",
+      "hidden": false
+    },
+    {
+      "name": "tidb_slow_query_file",
+      "hidden": true
+    },
+    {
+      "name": "tidb_slow_txn_log_threshold",
+      "hidden": false
+    },
+    {
+      "name": "tidb_stats_load_pseudo_timeout",
+      "hidden": false
+    },
+    {
+      "name": "tidb_stmt_summary_enable_persistent",
+      "hidden": false
+    },
+    {
+      "name": "tidb_stmt_summary_file_max_backups",
+      "hidden": false
+    },
+    {
+      "name": "tidb_stmt_summary_file_max_days",
+      "hidden": false
+    },
+    {
+      "name": "tidb_stmt_summary_file_max_size",
+      "hidden": false
+    },
+    {
+      "name": "tidb_stmt_summary_filename",
+      "hidden": false
+    },
+    {
+      "name": "tidb_stmt_summary_history_size",
+      "hidden": false
+    },
+    {
+      "name": "tidb_stmt_summary_internal_query",
+      "hidden": false
+    },
+    {
+      "name": "tidb_stmt_summary_refresh_interval",
+      "hidden": false
+    },
+    {
+      "name": "tidb_store_limit",
+      "hidden": false
+    },
+    {
+      "name": "tidb_streamagg_concurrency",
+      "hidden": false
+    },
+    {
+      "name": "tidb_super_read_only",
+      "hidden": false
+    },
+    {
+      "name": "tidb_top_sql_max_meta_count",
+      "hidden": false
+    },
+    {
+      "name": "tidb_top_sql_max_time_series_count",
+      "hidden": false
+    },
+    {
+      "name": "tidb_track_aggregate_memory_usage",
+      "hidden": true
+    },
+    {
+      "name": "tidb_txn_assertion_level",
+      "hidden": false
+    },
+    {
+      "name": "tidb_txn_commit_batch_size",
+      "hidden": false
+    },
+    {
+      "name": "tidb_txn_mode",
+      "hidden": false
+    },
+    {
+      "name": "tidb_use_plan_baselines",
+      "hidden": true
+    },
+    {
+      "name": "tiflash_compute_dispatch_policy",
+      "hidden": false
+    },
+    {
+      "name": "tiflash_replica_read",
+      "hidden": true
+    },
+    {
+      "name": "tikv_client_read_timeout",
+      "hidden": true
+    },
+    {
+      "name": "tx_isolation_one_shot",
+      "hidden": false
+    },
+    {
+      "name": "tx_read_ts",
+      "hidden": false
+    },
+    {
+      "name": "txn_scope",
+      "hidden": false
+    },
+    {
+      "name": "version",
+      "hidden": false
+    },
+    {
+      "name": "version_comment",
+      "hidden": false
+    },
+    {
+      "name": "version_compile_machine",
+      "hidden": false
+    },
+    {
+      "name": "version_compile_os",
+      "hidden": false
+    },
+    {
+      "name": "warning_count",
+      "hidden": false
+    }
+  ],
+  "restricted_privileges": [
+    "Config",
+    "File",
+    "Shutdown",
+    "BACKUP_ADMIN",
+    "RESTORE_ADMIN",
+    "PLACEMENT_ADMIN"
+  ],
+  "restricted_sql": {
+    "rule": [
+      "time_to_live",
+      "alter_table_attributes",
+      "import_with_external_id"
+    ],
+    "sql": [
+      "ALTER INSTANCE",
+      "ALTER PLACEMENT POLICY",
+      "ALTER RANGE",
+      "CREATE PLACEMENT POLICY",
+      "DROP PLACEMENT POLICY",
+      "FLASHBACK CLUSTER",
+      "RECOVER TABLE",
+      "ADMIN REPAIR TABLE",
+      "SHOW CREATE PLACEMENT POLICY",
+      "SHOW PLUGINS",
+      "SHOW CONFIG",
+      "SHOW PLACEMENT",
+      "SHOW PLACEMENT FOR DATABASE",
+      "SHOW PLACEMENT FOR TABLE",
+      "SHOW PLACEMENT FOR PARTITION",
+      "SHOW PLACEMENT LABELS",
+      "ADMIN SHOW SLOW",
+      "ADMIN PLUGINS DISABLE",
+      "ADMIN PLUGINS ENABLE",
+      "ADMIN SET BDR ROLE",
+      "ADMIN SHOW BDR ROLE",
+      "ADMIN UNSET BDR ROLE",
+      "BACKUP",
+      "RESTORE",
+      "BACKUP LOGS",
+      "STOP BACKUP LOGS",
+      "PAUSE BACKUP LOGS",
+      "RESUME BACKUP LOGS",
+      "SHOW BACKUP LOGS STATUS",
+      "SHOW BACKUP LOGS METADATA",
+      "PURGE BACKUP LOGS",
+      "SHOW BR JOB",
+      "SHOW BR JOB QUERY",
+      "CANCEL BR JOB",
+      "SHOW BACKUP META",
+      "CALIBRATE RESOURCE",
+      "PLAN REPLAYER",
+      "SET CONFIG",
+      "SHUTDOWN",
+      "LOAD STATS"
+    ]
+  }
+}

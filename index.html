@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEM Configuration Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styles for file input */
+        .file-input-label {
+            display: block;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            background-color: #4A5568;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-align: center;
+        }
+        .file-input-label:hover {
+            background-color: #2D3748;
+        }
+        .file-input {
+            display: none;
+        }
+        .file-name {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #A0AEC0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200 antialiased">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-white">SEM Configuration Generator</h1>
+            <p class="text-gray-400 mt-2">Upload CSV files to generate a JSON configuration.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Left Column: Inputs and Options -->
+            <div class="bg-gray-800 p-6 rounded-xl shadow-lg space-y-6">
+                <div>
+                    <h2 class="text-2xl font-semibold text-white mb-4 border-b border-gray-700 pb-2">1. Upload CSV Files</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- System Variables Upload -->
+                        <div>
+                            <label for="variablesFile" class="file-input-label">
+                                <span>System Variables CSV</span>
+                            </label>
+                            <input type="file" id="variablesFile" class="file-input" accept=".csv">
+                            <p id="variablesFileName" class="file-name">No file chosen</p>
+                        </div>
+                        <!-- Privileges Upload -->
+                        <div>
+                            <label for="privilegesFile" class="file-input-label">
+                                <span>Privileges CSV</span>
+                            </label>
+                            <input type="file" id="privilegesFile" class="file-input" accept=".csv">
+                            <p id="privilegesFileName" class="file-name">No file chosen</p>
+                        </div>
+                        <!-- System Tables Upload -->
+                        <div>
+                            <label for="tablesFile" class="file-input-label">
+                                <span>System Tables CSV</span>
+                            </label>
+                            <input type="file" id="tablesFile" class="file-input" accept=".csv">
+                            <p id="tablesFileName" class="file-name">No file chosen</p>
+                        </div>
+                        <!-- SQL Upload -->
+                        <div>
+                            <label for="sqlFile" class="file-input-label">
+                                <span>SQL CSV</span>
+                            </label>
+                            <input type="file" id="sqlFile" class="file-input" accept=".csv">
+                            <p id="sqlFileName" class="file-name">No file chosen</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h2 class="text-2xl font-semibold text-white mb-4 border-b border-gray-700 pb-2">2. Configuration Options</h2>
+                    <div class="space-y-4">
+                        <!-- TiDB Version -->
+                        <div>
+                            <label for="tidbVersion" class="block text-sm font-medium text-gray-300 mb-1">TiDB Version</label>
+                            <input type="text" id="tidbVersion" value="v8.5.0" class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        </div>
+                        <!-- Restricted Databases -->
+                        <div>
+                            <label for="restrictedDatabases" class="block text-sm font-medium text-gray-300 mb-1">Restricted Databases (comma-separated)</label>
+                            <input type="text" id="restrictedDatabases" value="metrics_schema" class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        </div>
+                        <!-- Restricted Status Variables -->
+                        <div>
+                            <label for="restrictedStatusVariables" class="block text-sm font-medium text-gray-300 mb-1">Restricted Status Variables (comma-separated)</label>
+                            <input type="text" id="restrictedStatusVariables" value="tidb_gc_leader_desc" class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        </div>
+                        <!-- Restricted SQL Rules -->
+                        <div>
+                            <label for="restrictedRules" class="block text-sm font-medium text-gray-300 mb-1">Restricted SQL Rules (comma-separated)</label>
+                            <input type="text" id="restrictedRules" value="time_to_live,alter_table_attributes,import_with_external_id" class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <button id="generateBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 shadow-lg">
+                    Generate Configuration
+                </button>
+            </div>
+
+            <!-- Right Column: Output and Logs -->
+            <div class="bg-gray-800 p-6 rounded-xl shadow-lg flex flex-col">
+                <div class="flex justify-between items-center mb-4 border-b border-gray-700 pb-2">
+                    <h2 class="text-2xl font-semibold text-white">3. Generated JSON</h2>
+                    <button id="downloadBtn" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        Download JSON
+                    </button>
+                </div>
+                <div class="flex-grow bg-gray-900 rounded-lg p-4 overflow-auto">
+                    <pre id="output" class="text-sm text-gray-300 whitespace-pre-wrap break-words"></pre>
+                </div>
+                <div id="log" class="mt-4 text-sm text-gray-400 bg-gray-900 rounded-lg p-4">
+                    <!-- Log messages will appear here -->
+                </div>
+                 <div id="error" class="mt-4 text-sm text-red-400 bg-red-900/50 rounded-lg p-4 hidden">
+                    <!-- Error messages will appear here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Core Logic (Adapted from your Node.js script) ---
+
+        // Parse CSV content into array of objects
+        function parseCSV(csvContent) {
+            // Filter out empty lines and lines with only whitespace
+            const lines = csvContent.split('\n').filter(line => line.trim().length > 0);
+            if (lines.length < 2) return []; // Not enough data to parse
+            
+            const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+            
+            return lines.slice(1).map(line => {
+                const values = [];
+                let current = '';
+                let inQuotes = false;
+                
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    if (char === '"') {
+                        // Toggle inQuotes state, handles escaped quotes later if needed
+                        inQuotes = !inQuotes;
+                    } else if (char === ',' && !inQuotes) {
+                        values.push(current.trim());
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                values.push(current.trim());
+                
+                const obj = {};
+                headers.forEach((header, index) => {
+                    // Ensure header exists before assigning
+                    if (header) {
+                       obj[header] = values[index] ? values[index].replace(/"/g, '') : '';
+                    }
+                });
+                return obj;
+            });
+        }
+
+        // Convert system variables CSV to restricted variables
+        function convertSystemVariables(variables) {
+            const restrictedVariables = [];
+            variables.forEach(variable => {
+                const name = variable.Name;
+                const premiumAccess = variable['Access (Premium)'];
+                
+                if (premiumAccess === 'Invisible' || premiumAccess === 'Read-only') {
+                    const restrictedVar = { name: name };
+                    restrictedVar.hidden = premiumAccess === 'Invisible';
+                    if (name === 'hostname') {
+                        restrictedVar.value = 'localhost';
+                    }
+                    restrictedVariables.push(restrictedVar);
+                }
+            });
+            return restrictedVariables;
+        }
+
+        // Convert privileges CSV to restricted privileges
+        function convertPrivileges(privileges) {
+            const restrictedPrivileges = [];
+            privileges.forEach(privilege => {
+                const privilegeName = privilege.Privilege;
+                const premiumAccess = privilege.Premium;
+                if (premiumAccess === 'NO') {
+                    restrictedPrivileges.push(privilegeName);
+                }
+            });
+            return restrictedPrivileges;
+        }
+
+        // Convert system tables CSV to restricted tables
+        function convertSystemTables(tables) {
+            const restrictedTables = [];
+            tables.forEach(table => {
+                const tableName = table['Table name'];
+                const schema = table.Schema;
+                const premium = table.Premium;
+                
+                if (premium === 'NO' && tableName && schema) {
+                    restrictedTables.push({
+                        "schema": schema.toLowerCase(),
+                        "name": tableName.toLowerCase(),
+                        "hidden": true
+                    });
+                }
+            });
+            return restrictedTables;
+        }
+
+        // Convert SQL CSV to restricted SQL
+        function convertSQL(sqlData) {
+            const restrictedSQL = [];
+            sqlData.forEach(sql => {
+                const sqlStatement = sql.SQL;
+                const premium = sql.Premium;
+                if (premium === 'NO') {
+                    restrictedSQL.push(sqlStatement);
+                }
+            });
+            return restrictedSQL;
+        }
+
+        // Generate the complete SEM configuration
+        function generateSEMConfig(variables, privileges, tables, sqlData, options = {}) {
+            const restrictedVariables = convertSystemVariables(variables);
+            const restrictedPrivileges = convertPrivileges(privileges);
+            const restrictedTables = convertSystemTables(tables);
+            const restrictedSQL = convertSQL(sqlData);
+            
+            const config = {
+                version: "1.0",
+                tidb_version: options.tidbVersion || "v8.5.0",
+                restricted_databases: options.restrictedDatabases || ["metrics_schema"],
+                restricted_tables: restrictedTables,
+                restricted_status_variables: options.restrictedStatusVariables || ["tidb_gc_leader_desc"],
+                restricted_variables: restrictedVariables,
+                restricted_privileges: restrictedPrivileges,
+                restricted_sql: {
+                    rule: options.restrictedRules || ["time_to_live", "alter_table_attributes", "import_with_external_id"],
+                    sql: restrictedSQL
+                }
+            };
+            
+            return config;
+        }
+
+        // --- Web App Specific Logic ---
+
+        const generateBtn = document.getElementById('generateBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const outputEl = document.getElementById('output');
+        const logEl = document.getElementById('log');
+        const errorEl = document.getElementById('error');
+        let generatedConfig = null;
+
+        // Function to read a file as text using FileReader
+        function readFileAsText(file) {
+            return new Promise((resolve, reject) => {
+                if (!file) {
+                    // Resolve with empty string if no file is provided
+                    // This allows the process to continue even if some files are missing
+                    resolve(""); 
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = () => reject(reader.error);
+                reader.readAsText(file);
+            });
+        }
+        
+        // Update file name display on file selection
+        function setupFileInput(inputId, nameId) {
+            const input = document.getElementById(inputId);
+            const nameDisplay = document.getElementById(nameId);
+            input.addEventListener('change', () => {
+                if (input.files.length > 0) {
+                    nameDisplay.textContent = input.files[0].name;
+                    nameDisplay.title = input.files[0].name;
+                } else {
+                    nameDisplay.textContent = 'No file chosen';
+                }
+            });
+        }
+        
+        setupFileInput('variablesFile', 'variablesFileName');
+        setupFileInput('privilegesFile', 'privilegesFileName');
+        setupFileInput('tablesFile', 'tablesFileName');
+        setupFileInput('sqlFile', 'sqlFileName');
+
+        // Main execution on button click
+        generateBtn.addEventListener('click', async () => {
+            logEl.innerHTML = '';
+            errorEl.innerHTML = '';
+            errorEl.classList.add('hidden');
+            outputEl.textContent = 'Generating...';
+            downloadBtn.disabled = true;
+            generatedConfig = null;
+
+            try {
+                // Get files from inputs
+                const variablesFile = document.getElementById('variablesFile').files[0];
+                const privilegesFile = document.getElementById('privilegesFile').files[0];
+                const tablesFile = document.getElementById('tablesFile').files[0];
+                const sqlFile = document.getElementById('sqlFile').files[0];
+
+                // Check if at least one file is uploaded
+                if (!variablesFile && !privilegesFile && !tablesFile && !sqlFile) {
+                    throw new Error("Please upload at least one CSV file to generate the configuration.");
+                }
+
+                // Read all files concurrently
+                const [variablesCSV, privilegesCSV, tablesCSV, sqlCSV] = await Promise.all([
+                    readFileAsText(variablesFile),
+                    readFileAsText(privilegesFile),
+                    readFileAsText(tablesFile),
+                    readFileAsText(sqlFile)
+                ]);
+
+                // Parse CSV data
+                const variables = parseCSV(variablesCSV);
+                const privileges = parseCSV(privilegesCSV);
+                const tables = parseCSV(tablesCSV);
+                const sqlData = parseCSV(sqlCSV);
+
+                // Get options from input fields
+                const options = {
+                    tidbVersion: document.getElementById('tidbVersion').value,
+                    restrictedDatabases: document.getElementById('restrictedDatabases').value.split(',').map(s => s.trim()).filter(Boolean),
+                    restrictedStatusVariables: document.getElementById('restrictedStatusVariables').value.split(',').map(s => s.trim()).filter(Boolean),
+                    restrictedRules: document.getElementById('restrictedRules').value.split(',').map(s => s.trim()).filter(Boolean)
+                };
+
+                // Generate configuration
+                const config = generateSEMConfig(variables, privileges, tables, sqlData, options);
+                generatedConfig = config;
+
+                // Write output
+                const outputJSON = JSON.stringify(config, null, 2);
+                outputEl.textContent = outputJSON;
+
+                // Display logs
+                logEl.innerHTML = `
+                    <p>SEM configuration generated successfully!</p>
+                    <p>Found ${config.restricted_variables.length} restricted variables</p>
+                    <p>Found ${config.restricted_privileges.length} restricted privileges</p>
+                    <p>Found ${config.restricted_tables.length} restricted tables</p>
+                    <p>Found ${config.restricted_sql.sql.length} restricted SQL statements</p>
+                `;
+
+                downloadBtn.disabled = false;
+
+            } catch (error) {
+                console.error('Error generating SEM configuration:', error);
+                outputEl.textContent = '';
+                errorEl.textContent = `Error: ${error.message}`;
+                errorEl.classList.remove('hidden');
+            }
+        });
+
+        // Download button functionality
+        downloadBtn.addEventListener('click', () => {
+            if (!generatedConfig) return;
+
+            const blob = new Blob([JSON.stringify(generatedConfig, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sem-config.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+</html>
